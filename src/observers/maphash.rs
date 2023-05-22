@@ -21,6 +21,22 @@ pub struct MapHashingObserverSettings {
     log_crcs: bool,
 }
 
+impl MapHashingObserverSettings {
+    pub fn new(
+        assert_different: bool,
+        err_if_same: bool,
+        print_crcs: bool,
+        log_crcs: bool,
+    ) -> Self {
+        Self {
+            assert_different,
+            err_if_same,
+            print_crcs,
+            log_crcs,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(bound = "M: serde::de::DeserializeOwned")]
 pub struct MapHashingObserver<M>
