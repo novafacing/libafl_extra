@@ -7,6 +7,6 @@ edition = "2021"
 
 [dependencies]
 crc32fast = "^1.0"
-libafl = "^0.10"
+libafl = { git = "https://github.com/aflplusplus/libafl", branch = "main", version = "^0.10" }
 log = "^0.4"
 serde = { version = "^1.0", features = ["derive"] }
