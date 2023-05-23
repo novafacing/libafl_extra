@@ -1,17 +1,28 @@
 //! MapHashingObserver prints the hash of the map it is observing before and after each run.
+mod count_class;
 
+use count_class::init_count_class_16;
 use crc32fast::hash;
-use libafl::{
-    prelude::{
-        AsIter, AsIterMut, AsMutSlice, AsSlice, DifferentialObserver, HasLen, MapObserver, Named,
-        Observer, ObserversTuple, Truncate, UsesInput,
-    },
-    Error, ErrorBacktrace,
-};
 use log::info;
 use serde::{Deserialize, Serialize};
 
-use super::count_class::init_count_class_16;
+#[cfg(feature = "libafl_crates")]
+use libafl_crates::{
+    prelude::{
+        AsIter, AsIterMut, AsMutSlice, AsSlice, DifferentialObserver, ExitKind, HasLen,
+        MapObserver, Named, Observer, ObserversTuple, Truncate, UsesInput,
+    },
+    Error, ErrorBacktrace,
+};
+
+#[cfg(feature = "libafl_git")]
+use libafl_git::{
+    prelude::{
+        AsIter, AsIterMut, AsMutSlice, AsSlice, DifferentialObserver, ExitKind, HasLen,
+        MapObserver, Named, Observer, ObserversTuple, Truncate, UsesInput,
+    },
+    Error, ErrorBacktrace,
+};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct MapHashingObserverSettings {
@@ -76,7 +87,7 @@ where
         &mut self,
         _state: &mut S,
         _input: &<S as UsesInput>::Input,
-        _exit_kind: &libafl::prelude::ExitKind,
+        _exit_kind: &ExitKind,
     ) -> Result<(), Error> {
         let post_hash = hash(self.base.as_mut_slice());
 
